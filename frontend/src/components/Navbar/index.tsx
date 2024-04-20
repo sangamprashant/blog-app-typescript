@@ -14,6 +14,8 @@ function Navbar() {
     theme.setAppTheme(newTheme);
   };
 
+  const themeForToggleOn = "bg-warning";
+
   return (
     <nav
       className="navbar navbar-expand-lg"
@@ -51,7 +53,12 @@ function Navbar() {
         >
           <div className="d-flex gap-3 align-items-center">
             <div className="d-flex align-items-center gap-0">
-              <label className="form-check-label" htmlFor="themeSwitch">
+              <label
+                className={`form-check-label p-1 rounded-4 mx-1 ${
+                  theme.appTheme === "light" && themeForToggleOn
+                }`}
+                htmlFor="themeSwitch"
+              >
                 <WbSunnyOutlinedIcon />
               </label>
               {"  "}
@@ -65,7 +72,12 @@ function Navbar() {
                   checked={theme.appTheme === "dark"}
                 />
               </div>
-              <label className="form-check-label" htmlFor="themeSwitch">
+              <label
+                className={`form-check-label p-1 mx-0 rounded-4 ${
+                  theme.appTheme === "dark" && themeForToggleOn
+                } `}
+                htmlFor="themeSwitch"
+              >
                 <DarkModeOutlinedIcon />
               </label>
             </div>

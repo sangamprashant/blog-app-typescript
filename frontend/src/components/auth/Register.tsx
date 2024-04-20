@@ -1,11 +1,93 @@
+// Register.tsx
 import React from "react";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import { ThemeContext } from "../context/ThemeContext";
 import { Link } from "react-router-dom";
 
 const Register = () => {
-  const theme = React.useContext(ThemeContext);
-  const th = theme.appTheme === "light" ? true : false;
+  const { appTheme, modalsProps } = React.useContext(ThemeContext);
+  const th = appTheme === "light" ? true : false;
+  // Form data state variables
+  const [formData, setFormData] = React.useState({
+    email: "",
+    name: "",
+    password: "",
+  });
+  const maxLength: {
+    [key: string]: number;
+  } = {
+    email: 50,
+    name: 50,
+    password: 20,
+  };
+
+  // Handle input changes
+  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    // Validate input length
+    if (value.length <= maxLength[name]) {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    } else {
+      modalsProps.setIsOpenModal(true);
+      modalsProps.setModalValue(
+        <>
+          <p className="text-warning ">warning</p>
+          <h5 className="m-0 p-0">Length of "{name}" is more.</h5>
+          <p className="m-0 p-0 text-success">
+            maximum length is {name === "password" ? 20 : 50}
+          </p>
+        </>
+      );
+    }
+  };
+
+  // Handle form submission
+  const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (
+      !formData.name.trim() ||
+      !formData.email.trim() ||
+      !formData.password.trim()
+    ) {
+      // Display warning for empty input fields
+      modalsProps.setIsOpenModal(true);
+      modalsProps.setModalValue(
+        <>
+          <p className="text-warning">Warning</p>
+          <h5 className="m-0 p-0">Input fields are required</h5>
+          <p className="m-0 p-0 text-success">Please fill in all the fields</p>
+        </>
+      );
+      return;
+    }  if (
+      formData.name.length > 50 ||
+      formData.email.length > 50 ||
+      formData.password.length > 20
+    ) {
+      // Display warning for exceeding maximum lengths
+      modalsProps.setIsOpenModal(true);
+      modalsProps.setModalValue(
+        <>
+          <p className="text-warning">Warning</p>
+          <h5 className="m-0 p-0">
+            Length of name, email, or password is too long.
+          </h5>
+          <p className="m-0 p-0 text-success">
+            Maximum length for name and email is 50, and for password is 20.
+          </p>
+        </>
+      );
+      return;
+    }
+    // If all validations pass, proceed with form submission or sending data to backend
+    console.log(formData);
+  };
+
   return (
     <div className="auth_form_wrapper">
       <div className="container">
@@ -50,42 +132,51 @@ const Register = () => {
               <div className="d-flex align-items-center justify-content-center text-uppercase">
                 <h2>or</h2>
               </div>
-              <div className="formsix-pos my-2">
-                <div className="form-group i-email">
-                  <input
-                    type="text"
-                    className="form-control p-3"
-                    id="name"
-                    placeholder="Name *"
-                  />
+              <form onSubmit={handleRegister}>
+                <div className="formsix-pos my-2">
+                  <div className="form-group i-email">
+                    <input
+                      type="text"
+                      className="form-control p-3"
+                      id="name"
+                      placeholder="Name *"
+                      name="name"
+                      onChange={handleOnChange}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="formsix-pos my-2">
-                <div className="form-group i-email">
-                  <input
-                    type="email"
-                    className="form-control p-3"
-                    id="email2"
-                    placeholder="Email Address *"
-                  />
+                <div className="formsix-pos my-2">
+                  <div className="form-group i-email">
+                    <input
+                      type="email"
+                      className="form-control p-3"
+                      id="email2"
+                      placeholder="Email Address *"
+                      name="email"
+                      onChange={handleOnChange}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="formsix-e my-2">
-                <div className="form-group i-password">
-                  <input
-                    type="password"
-                    className="form-control p-3"
-                    id="password2"
-                    placeholder="Password *"
-                  />
+                <div className="formsix-e my-2">
+                  <div className="form-group i-password">
+                    <input
+                      type="password"
+                      className="form-control p-3"
+                      id="password2"
+                      placeholder="Password *"
+                      name="password"
+                      autoComplete="off"
+                      onChange={handleOnChange}
+                    />
+                  </div>
                 </div>
-              </div>
-              <button
-                className={`w-100 btn btn-lg btn-${th ? "success" : "dark"}`}
-                type="submit"
-              >
-                GET SATRTED
-              </button>
+                <button
+                  className={`w-100 btn btn-lg btn-${th ? "success" : "dark"}`}
+                  type="submit"
+                >
+                  GET SATRTED
+                </button>
+              </form>
               <div className="login_message">
                 <p>
                   Don't have an account?{" "}

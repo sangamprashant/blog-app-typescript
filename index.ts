@@ -34,12 +34,25 @@ db.on("error", (err) => {
   console.error("MongoDB connection error:", err);
 });
 
+// Extend the Request interface to include the user property
+declare global {
+  namespace Express {
+    interface Request {
+      user?: any;
+    }
+  }
+}
+
 // Define routes
 app.get("/", (req, res) => {
   res.status(200).json({
     message: "Server is running",
   });
 });
+
+// Import and use the user router
+import userRouter from "./server/router/user";
+app.use("/api/user", userRouter);
 
 // Start the server
 app.listen(PORT, () => {

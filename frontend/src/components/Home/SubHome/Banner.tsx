@@ -3,9 +3,8 @@ import { HomeImage } from "../../../assets/images";
 import { ThemeContext } from "../../context/ThemeContext";
 
 function Banner() {
-
-  const global = React.useContext(ThemeContext)
-  const ct = global.appTheme ==="light"? "text-dark" : "text-success"
+  const global = React.useContext(ThemeContext);
+  const ct = global.appTheme === "light" ? "text-dark" : "text-success";
 
   return (
     <section className="container">

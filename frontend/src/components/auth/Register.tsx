@@ -2,10 +2,15 @@
 import React from "react";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import { ThemeContext } from "../context/ThemeContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { SERVER } from "../../config";
 
 const Register = () => {
-  const { appTheme, modalsProps } = React.useContext(ThemeContext);
+  const navigate = useNavigate();
+  const { appTheme, modalsProps, authProps } = React.useContext(ThemeContext);
+  const [isWaiting, setWaiting] = React.useState<boolean>(false);
+  const [timeWaiting, setTimeWaiting] = React.useState(60);
   const th = appTheme === "light" ? true : false;
   // Form data state variables
   const [formData, setFormData] = React.useState({
@@ -46,7 +51,7 @@ const Register = () => {
   };
 
   // Handle form submission
-  const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (
@@ -64,7 +69,8 @@ const Register = () => {
         </>
       );
       return;
-    }  if (
+    }
+    if (
       formData.name.length > 50 ||
       formData.email.length > 50 ||
       formData.password.length > 20
@@ -84,9 +90,63 @@ const Register = () => {
       );
       return;
     }
-    // If all validations pass, proceed with form submission or sending data to backend
-    console.log(formData);
+    try {
+      setWaiting(true);
+      setTimeWaiting(60);
+
+      const response: any = await axios.post(
+        `${SERVER}/user/register`,
+        formData
+      );
+
+      if (response.data.success) {
+        sessionStorage.setItem("token", response.data.token);
+        authProps.setToken(response.data.token);
+        setWaiting(false);
+        setTimeWaiting(60);
+        authProps.setIsLogged(true);
+        modalsProps.setIsOpenModal(true);
+        modalsProps.setModalValue(
+          <>
+            <p className="text-success ">Success</p>
+            <h5 className="m-0 p-0">
+              {response.data.message || "Registered successfully."}
+            </h5>
+          </>
+        );
+        navigate("/");
+      }
+    } catch (error: any) {
+      console.log("failed in register:", error);
+      const redirectUrl = error.response?.data?.redirect ?? null;
+      modalsProps.setIsOpenModal(true);
+      modalsProps.setModalValue(
+        <>
+          <p className="text-danger ">Error</p>
+          <h5 className="m-0 p-0 text-dark">{error.response.data.message}</h5>
+          <p className="m-0 p-0">
+            Redirecting to: {window.location.origin}
+            {redirectUrl}
+          </p>
+        </>
+      );
+      if (redirectUrl) {
+        navigate(redirectUrl);
+      }
+    }
   };
+
+  React.useEffect(() => {
+    let intervalId: any;
+    if (isWaiting) {
+      intervalId = setInterval(() => {
+        setTimeWaiting((prevTime) => prevTime - 1);
+      }, 1000);
+    } else {
+      clearInterval(intervalId);
+    }
+    return () => clearInterval(intervalId);
+  }, [isWaiting]);
 
   return (
     <div className="auth_form_wrapper">
@@ -172,23 +232,33 @@ const Register = () => {
                 </div>
                 <button
                   className={`w-100 btn btn-lg btn-${th ? "success" : "dark"}`}
+                  disabled={isWaiting}
                   type="submit"
                 >
-                  GET SATRTED
+                  {isWaiting ? "PLEASE WAIT.." : "GET SATRTED"}
                 </button>
               </form>
               <div className="login_message">
-                <p>
-                  Don't have an account?{" "}
-                  <Link
-                    to="/login"
-                    className={`text-decoration-none text-${
-                      th ? "success" : "dark"
-                    }`}
-                  >
-                    Login
-                  </Link>
-                </p>
+                {isWaiting ? (
+                  <p>
+                    Didn't get the email? try in{" "}
+                    <a className="text-success text-decoration-none">
+                      0:{timeWaiting <= 0 ? "00" : timeWaiting}
+                    </a>
+                  </p>
+                ) : (
+                  <p>
+                    Don't have an account?{" "}
+                    <Link
+                      to="/login"
+                      className={`text-decoration-none text-${
+                        th ? "success" : "dark"
+                      }`}
+                    >
+                      Login
+                    </Link>
+                  </p>
+                )}
               </div>
             </div>
           </div>

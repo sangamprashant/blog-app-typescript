@@ -57,7 +57,8 @@ const Login = () => {
         </>
       );
       return;
-    }  if (formData.email.length > 50 || formData.password.length > 20) {
+    }
+    if (formData.email.length > 50 || formData.password.length > 20) {
       // Display warning for exceeding maximum lengths
       modalsProps.setIsOpenModal(true);
       modalsProps.setModalValue(

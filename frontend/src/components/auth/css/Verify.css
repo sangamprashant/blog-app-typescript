@@ -1,0 +1,5 @@
+.verifying,
+.verification-success,
+.verification-failed {
+    max-width: 500px;
+}

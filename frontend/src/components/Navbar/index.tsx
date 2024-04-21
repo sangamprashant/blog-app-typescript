@@ -52,9 +52,9 @@ function Navbar() {
           id="navbarSupportedContent"
         >
           <div className="d-flex gap-3 align-items-center">
-            <div className="d-flex align-items-center gap-0">
+            <div className="d-flex align-items-center gap-0 bg-gradient rounded-5">
               <label
-                className={`form-check-label p-1 rounded-4 mx-1 ${
+                className={`form-check-label p-1 rounded-4  ${
                   theme.appTheme === "light" && themeForToggleOn
                 }`}
                 htmlFor="themeSwitch"

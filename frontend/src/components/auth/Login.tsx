@@ -1,11 +1,15 @@
 import React from "react";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import { ThemeContext } from "../context/ThemeContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { SERVER } from "../../config";
 
 const Login = () => {
-  const { appTheme, modalsProps } = React.useContext(ThemeContext);
+  const { appTheme, modalsProps, authProps } = React.useContext(ThemeContext);
   const th = appTheme === "light" ? true : false;
+  const navigate = useNavigate();
+  const [waithing, setWaiting] = React.useState<boolean>(false);
   // Form data state variables
   const [formData, setFormData] = React.useState({
     email: "",
@@ -17,6 +21,12 @@ const Login = () => {
     email: 50,
     password: 20,
   };
+
+  React.useLayoutEffect(() => {
+    if (authProps.isLogged) {
+      navigate("/");
+    }
+  }, [authProps]);
 
   // Handle input changes
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +53,7 @@ const Login = () => {
   };
 
   // Handle form submission
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!formData.email.trim() || !formData.password.trim()) {
@@ -74,8 +84,47 @@ const Login = () => {
       );
       return;
     }
-    // If all validations pass, proceed with form submission or sending data to backend
-    console.log(formData);
+    try {
+      const response = await axios.post(`${SERVER}/user/login`, formData);
+      if (response.data.success) {
+        sessionStorage.setItem("token", response.data.token);
+        authProps.setToken(response.data.token);
+
+        authProps.setIsLogged(true);
+        modalsProps.setIsOpenModal(true);
+        modalsProps.setModalValue(
+          <>
+            <p className="text-success ">Success</p>
+            <h5 className="m-0 p-0">
+              {response.data.message || "Registered successfully."}
+            </h5>
+          </>
+        );
+        navigate("/");
+      }
+    } catch (error: any) {
+      console.log("failed to login");
+      const redirectUrl = error.response?.data?.redirect ?? null;
+      modalsProps.setIsOpenModal(true);
+      modalsProps.setModalValue(
+        <>
+          <p className="text-danger ">Error</p>
+          <h5 className="m-0 p-0 text-dark">{error.response.data.message}</h5>
+          <p className="m-0 p-0">
+            Redirecting:{" "}
+            <a href={`${window.location.origin}${redirectUrl}`}>
+              {window.location.origin}
+              {redirectUrl}
+            </a>
+          </p>
+        </>
+      );
+      if (redirectUrl) {
+        navigate(redirectUrl);
+      }
+    } finally {
+      setWaiting(false);
+    }
   };
   return (
     <div className="auth_form_wrapper">
@@ -161,7 +210,7 @@ const Login = () => {
                   className={`w-100 btn btn-lg btn-${th ? "success" : "dark"}`}
                   type="submit"
                 >
-                  LOGIN
+                  {waithing ? "PLEASE WAIT.." : "LOGIN"}
                 </button>
               </form>
               <div className="login_message">

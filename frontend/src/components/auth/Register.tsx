@@ -26,6 +26,12 @@ const Register = () => {
     password: 20,
   };
 
+  React.useLayoutEffect(() => {
+    if (authProps.isLogged) {
+      navigate("/");
+    }
+  }, [authProps]);
+
   // Handle input changes
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -125,8 +131,11 @@ const Register = () => {
           <p className="text-danger ">Error</p>
           <h5 className="m-0 p-0 text-dark">{error.response.data.message}</h5>
           <p className="m-0 p-0">
-            Redirecting to: {window.location.origin}
-            {redirectUrl}
+            Redirecting:{" "}
+            <a href={`${window.location.origin}${redirectUrl}`}>
+              {window.location.origin}
+              {redirectUrl}
+            </a>
           </p>
         </>
       );

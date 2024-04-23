@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import "./user.css"; // Import custom CSS styles
 import Profile from "./Profile";
 import Toggle from "../Navbar/Toggle";
@@ -26,6 +26,19 @@ import FeedbackIcon from "@mui/icons-material/Feedback";
 const UserMain = () => {
   const { appTheme } = React.useContext(ThemeContext);
   const th: boolean = appTheme === "light" ? true : false;
+  const navigate = useNavigate();
+  const [active, setActive] = React.useState(window.location.pathname);
+
+  React.useEffect(() => {
+    setActive(window.location.pathname);
+    const activeLink = document.querySelector(
+      `.list-group-item[href="${window.location.pathname}"]`
+    );
+    if (activeLink) {
+      activeLink.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [window.location.pathname, navigate]);
+
   const navItems = [
     {
       group: "",
@@ -134,18 +147,19 @@ const UserMain = () => {
             {/* Use custom styling for links */}
             {navItems.map((group, index) => (
               <React.Fragment key={index}>
-
-                {group.group && 
-                <React.Fragment>
-                  <hr />
-                  <p className="text-white p-0 m-0">{group.group}</p>
-                </React.Fragment>
-                }
+                {group.group && (
+                  <React.Fragment>
+                    <hr />
+                    <p className="text-white p-0 m-0">{group.group}</p>
+                  </React.Fragment>
+                )}
                 {group.link.map((item, idx) => (
                   <Link
                     to={item.link}
                     key={idx}
-                    className={`list-group-item  text-white text-decoration-none bg-dark my-1 rounded-2 py-3 border-0 d-flex align-items-center gap-2`}
+                    className={`list-group-item  text-white text-decoration-none bg-dark my-1 rounded-2 py-3 d-flex align-items-center gap-2 border-${
+                      active === item.link ? "1" : "0"
+                    }`}
                   >
                     {item.icon}
                     {item.title}
@@ -172,7 +186,12 @@ const UserMain = () => {
         >
           <Search th={th} />
           <hr />
-          <Profile />
+          <div className="main-container-user overflow-y-scroll">
+            <Routes>
+              <Route path="/account" element={<Profile />} />
+            </Routes>
+          </div>
+
           {/* Add more main content components here */}
         </div>
       </div>

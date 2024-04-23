@@ -10,3 +10,7 @@
 .dark-theme::placeholder {
   color: #adb5bd;
 }
+
+.main-container-user {
+  height: calc(100vh - 110px);
+}

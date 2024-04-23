@@ -8,7 +8,7 @@ type SearchProps = {
 
 const Search = ({ th }: SearchProps) => {
   return (
-    <section className="d-flex justify-content-center">
+    <section className="d-flex justify-content-center py-1">
       <form className="d-flex gap-2 col-md-6">
         <input 
           type="search" 

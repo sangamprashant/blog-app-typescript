@@ -1,0 +1,22 @@
+.comments-container {
+    border: 1px solid #464646;
+    border-radius: 0.25rem;
+  }
+  
+  .comments {
+    padding: 10px;
+    overflow: auto;
+  }
+  
+  .comment {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(124, 122, 122, 0.211);
+    border-radius: 5px;
+  }
+  
+  .comment-input {
+    display: flex;
+    align-items: center;
+  }
+  

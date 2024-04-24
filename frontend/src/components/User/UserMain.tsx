@@ -22,6 +22,8 @@ import AnalyticsIcon from "@mui/icons-material/Analytics";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 import HistoryIcon from "@mui/icons-material/History";
 import FeedbackIcon from "@mui/icons-material/Feedback";
+import OpenArticle from "./Profile/Article/OpenArticle";
+import WriteAnArticle from "./Profile/Article/WriteAnArticle";
 
 const UserMain = () => {
   const { appTheme } = React.useContext(ThemeContext);
@@ -189,6 +191,8 @@ const UserMain = () => {
           <div className="main-container-user overflow-y-scroll">
             <Routes>
               <Route path="/account" element={<Profile />} />
+              <Route path="/write" element={<WriteAnArticle />} />
+              <Route path="/article/:id" element={<OpenArticle />} />
             </Routes>
           </div>
 

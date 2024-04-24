@@ -1,8 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const ProfileCards = () => {
   return (
-    <div className="gallery-item">
+    <Link to="/article/:id" className="gallery-item">
       <img
         src="https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop"
         className="gallery-image"
@@ -21,7 +22,7 @@ const ProfileCards = () => {
           </li>
         </ul>
       </div>
-    </div>
+    </Link>
   );
 };
 

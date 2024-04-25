@@ -4,14 +4,18 @@ import "./ArticleCSS/WriteAnArticle.css";
 import AlignHorizontalLeftIcon from "@mui/icons-material/AlignHorizontalLeft";
 import AlignHorizontalCenterIcon from "@mui/icons-material/AlignHorizontalCenter";
 import AlignHorizontalRightIcon from "@mui/icons-material/AlignHorizontalRight";
-import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
-import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
-import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
-import AlignVerticalBottomIcon from '@mui/icons-material/AlignVerticalBottom';
-import FormatBoldIcon from '@mui/icons-material/FormatBold';
-import FormatItalicIcon from '@mui/icons-material/FormatItalic';
+import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
+import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
+import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
+import AlignVerticalBottomIcon from "@mui/icons-material/AlignVerticalBottom";
+import FormatBoldIcon from "@mui/icons-material/FormatBold";
+import FormatItalicIcon from "@mui/icons-material/FormatItalic";
+import Heading from "./WriteAnArticlesComponents/Heading";
 
 const WriteAnArticle = () => {
+  const [b, setB] = React.useState<React.ElementType>("div");
+  const [I, setI] = React.useState<React.ElementType>("div");
+
   const [heading, setHeading] = useState("Heading of the contendt");
   const [content, setContent] = useState(
     "  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo hic eaque nesciunt, facere odio voluptate officiis! Necessitatibus facilis mollitia illum placeat? Tempora illum exercitationem accusantium placeat inventore facere obcaecati esse."
@@ -103,18 +107,48 @@ const WriteAnArticle = () => {
                 <input type="color" className="form-control" />
               </div>
             </div>
-            <div>
-              <button type="button" className="btn btn-outline-secondary"><AlignHorizontalLeftIcon/></button>
-              <button type="button" className="btn btn-outline-secondary"><AlignHorizontalCenterIcon/></button>
-              <button type="button" className="btn btn-outline-secondary"><AlignHorizontalRightIcon/></button>
-              <button type="button" className="btn btn-outline-secondary"><AlignVerticalBottomIcon/></button>
-              <button type="button" className="btn btn-outline-secondary"><FormatAlignCenterIcon/></button>
-              <button type="button" className="btn btn-outline-secondary"><FormatAlignLeftIcon/></button>
-              <button type="button" className="btn btn-outline-secondary"><FormatAlignRightIcon/></button>
-              <button type="button" className="btn btn-outline-secondary"><FormatBoldIcon/></button>
-              <button type="button" className="btn btn-outline-secondary"><FormatItalicIcon/></button>
-
-
+            <div className="d-flex flex-wrap gap-2 mt-2">
+              <div className="p-2 border rounded-2 d-flex gap-2">
+                <button type="button" className="btn btn-outline-secondary">
+                  <AlignHorizontalLeftIcon />
+                </button>
+                <button type="button" className="btn btn-outline-secondary">
+                  <AlignHorizontalCenterIcon />
+                </button>
+                <button type="button" className="btn btn-outline-secondary">
+                  <AlignHorizontalRightIcon />
+                </button>
+                <button type="button" className="btn btn-outline-secondary">
+                  <AlignVerticalBottomIcon />
+                </button>
+              </div>
+              <div className="p-2 border rounded-2 d-flex gap-2">
+                <button
+                  type="button"
+                  className={`btn btn-${b === "b" ? "" : "outline-"}secondary`}
+                  onClick={ToggleBold}
+                >
+                  <FormatBoldIcon />
+                </button>
+                <button
+                  type="button"
+                  className={`btn btn-${I === "i" ? "" : "outline-"}secondary`}
+                  onClick={ToggleItalic}
+                >
+                  <FormatItalicIcon />
+                </button>
+              </div>
+              <div className="p-2 border rounded-2 d-flex gap-2">
+                <button type="button" className="btn btn-outline-secondary">
+                  <FormatAlignLeftIcon />
+                </button>
+                <button type="button" className="btn btn-outline-secondary">
+                  <FormatAlignCenterIcon />
+                </button>
+                <button type="button" className="btn btn-outline-secondary">
+                  <FormatAlignRightIcon />
+                </button>
+              </div>
             </div>
             <button type="submit" className="btn btn-primary">
               Post
@@ -124,7 +158,7 @@ const WriteAnArticle = () => {
             <div className="image-container">
               <img src={imageUrl} alt="" className="img-fluid" width="100%" />
               <div className="article-inputed-preview d-flex align-items- flex-column justify-content-end">
-                <h3 className="text-white">{heading}</h3>
+                <Heading heading={heading} italic={I} as={b} />
                 <p className="text-white">{content}</p>
               </div>
             </div>
@@ -133,6 +167,13 @@ const WriteAnArticle = () => {
       </form>
     </div>
   );
+  // function to click and manupulate
+  function ToggleBold() {
+    setB(b === "b" ? "div" : "b");
+  }
+  function ToggleItalic() {
+    setI(I === "i" ? "div" : "i");
+  }
 };
 
 export default WriteAnArticle;

@@ -18,7 +18,9 @@ const Profile = () => {
             <div className="profile-user-settings">
               <h1 className="profile-user-name">janedoe_</h1>
 
-              <button className="btn profile-edit-btn text-white">Edit Profile</button>
+              <button className="btn profile-edit-btn text-white">
+                Edit Profile
+              </button>
 
               <button
                 className="btn profile-settings-btn btn-outline-secondary  text-white"
@@ -55,12 +57,11 @@ const Profile = () => {
       <main>
         <div className="container">
           <div className="gallery">
-           <ProfileCards/>
-           <ProfileCards/>
-           <ProfileCards/>
-           <ProfileCards/>
-           <ProfileCards/>
-
+            <ProfileCards />
+            <ProfileCards />
+            <ProfileCards />
+            <ProfileCards />
+            <ProfileCards />
           </div>
           <div className="loader"></div>
         </div>

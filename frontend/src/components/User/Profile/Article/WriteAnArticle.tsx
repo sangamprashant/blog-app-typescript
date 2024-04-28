@@ -18,12 +18,11 @@ const WriteAnArticle = () => {
   const [A, setA] = React.useState<string>("start");
   const [HC, setHC] = React.useState<string>("#000000");
   const [CC, setCC] = React.useState<string>("#000000");
+  const [OPC, setOPC] = React.useState<string>("#000000"); // color
+  const [OP, setOP] = React.useState<number>(0.3); //opacity number
 
-  const [OPC, setOPC] = React.useState<string>("#000000");
-  const [OP, setOP] = React.useState<string>("#000000");
-
-  const [heading, setHeading] = useState("Heading of the contendt");
-  const [content, setContent] = useState(
+  const [heading, setHeading] = useState<string>("Heading of the contendt");
+  const [content, setContent] = useState<string>(
     "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo hic eaque nesciunt, facere odio voluptate officiis! Necessitatibus facilis mollitia illum placeat? Tempora illum exercitationem accusantium placeat inventore facere obcaecati esse."
   );
   const [imageUrl, setImageUrl] = useState(
@@ -100,43 +99,50 @@ const WriteAnArticle = () => {
               />
             </div>
             <div className="d-flex justify-content-between gap-2 p-2 border rounded-2">
-              <div className="w-100">
-                <label htmlFor="">Heading Color</label>
-                <input
-                  type="color"
-                  className="form-control w-100"
-                  value={HC}
-                  onChange={(e) => setHC(e.target.value)}
-                />
+              <div className="d-flex justify-content-between gap-2 p-2 border rounded-2 w-100">
+                <div className="w-100">
+                  <label htmlFor="">Heading</label>
+                  <input
+                    type="color"
+                    className="form-control w-100"
+                    value={HC}
+                    onChange={(e) => setHC(e.target.value)}
+                  />
+                </div>
+                <div className="w-100">
+                  <label htmlFor="">Content</label>{" "}
+                  <input
+                    type="color"
+                    className="form-control w-100"
+                    value={CC}
+                    onChange={(e) => setCC(e.target.value)}
+                  />
+                </div>
               </div>
-              <div className="w-100">
-                <label htmlFor="">Content Color</label>{" "}
-                <input
-                  type="color"
-                  className="form-control w-100"
-                  value={CC}
-                  onChange={(e) => setCC(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="mt-2 d-flex gap-2 p-2 border rounded-2 ">
-              <div className="w-100">
-                <label htmlFor="">Overlay Color</label>{" "}
-                <input type="color" className="form-control" />
-              </div>
-              <div className="w-100">
-                <label htmlFor="opacity">Opacity</label>{" "} <br />
-                <input
-                  type="range"
-                  id="opacity"
-                  min="0"
-                  max="1"
-                  step="0.1"
-                  value={""}
-                  className="form-control"
-                  // onChange={handleOpacityChange}
-                />
-                {/* <output>{"opacity"}</output> */}
+              <div className=" d-flex gap-2 p-2 border rounded-2 w-100">
+                <div className="w-100">
+                  <label htmlFor="">Overlay</label>{" "}
+                  <input
+                    type="color"
+                    className="form-control"
+                    value={OPC}
+                    onChange={(e) => setOPC(e.target.value)}
+                  />
+                </div>
+                <div className="w-100">
+                  <label htmlFor="opacity">Opacity</label> <br />
+                  <input
+                    type="range"
+                    id="opacity"
+                    min="0"
+                    max="1"
+                    step="0.1"
+                    className="form-control"
+                    value={OP}
+                    onChange={handleOpacityChange}
+                  />
+                  {/* <output>{"opacity"}</output> */}
+                </div>
               </div>
             </div>
             <p className="p-0 m-0 mt-2">Text settion</p>
@@ -219,6 +225,15 @@ const WriteAnArticle = () => {
               <img src={imageUrl} alt="" className="img-fluid" width="100%" />
               <div
                 className={`article-inputed-preview d-flex flex-column justify-content-${A} text-${F}`}
+                style={{
+                  backgroundColor: `rgba(${parseInt(
+                    OPC.substr(1, 2),
+                    16
+                  )}, ${parseInt(OPC.substr(3, 2), 16)}, ${parseInt(
+                    OPC.substr(5, 2),
+                    16
+                  )}, ${OP})`,
+                }}
               >
                 <Heading heading={heading} italic={I} as={b} color={HC} />
                 <p style={{ color: CC }}>{content}</p>
@@ -236,9 +251,9 @@ const WriteAnArticle = () => {
   function ToggleItalic() {
     setI(I === "i" ? "div" : "i");
   }
-  // function handleOpacityChange  (e: React.ChangeEvent<HTMLInputElement>) {
-  //   setOPC(...OPC, ...parseFloat(e.target.value));
-  // };
+  function handleOpacityChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setOP(parseFloat(e.target.value));
+  }
 };
 
 export default WriteAnArticle;

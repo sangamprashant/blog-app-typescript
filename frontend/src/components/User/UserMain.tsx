@@ -61,11 +61,6 @@ const UserMain = () => {
           icon: <CreateIcon />,
         },
         {
-          title: "My Articles",
-          link: "/articles",
-          icon: <ArticleIcon />,
-        },
-        {
           title: "Explore",
           link: "/explore",
           icon: <TravelExploreIcon />,

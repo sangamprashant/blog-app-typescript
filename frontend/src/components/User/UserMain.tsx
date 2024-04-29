@@ -24,6 +24,7 @@ import HistoryIcon from "@mui/icons-material/History";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import OpenArticle from "./Profile/Article/OpenArticle";
 import WriteAnArticle from "./Profile/Article/WriteAnArticle";
+import Explore from "./Explore";
 
 const UserMain = () => {
   const { appTheme } = React.useContext(ThemeContext);
@@ -187,6 +188,7 @@ const UserMain = () => {
             <Routes>
               <Route path="/account" element={<Profile />} />
               <Route path="/write" element={<WriteAnArticle />} />
+              <Route path="/explore" element={<Explore />} />
               <Route path="/article/:id" element={<OpenArticle />} />
             </Routes>
           </div>

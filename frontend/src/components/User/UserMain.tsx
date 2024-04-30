@@ -25,6 +25,7 @@ import FeedbackIcon from "@mui/icons-material/Feedback";
 import OpenArticle from "./Profile/Article/OpenArticle";
 import WriteAnArticle from "./Profile/Article/WriteAnArticle";
 import Explore from "./Explore";
+import Notification from "./Notification";
 
 const UserMain = () => {
   const { appTheme } = React.useContext(ThemeContext);
@@ -189,6 +190,7 @@ const UserMain = () => {
               <Route path="/account" element={<Profile />} />
               <Route path="/write" element={<WriteAnArticle />} />
               <Route path="/explore" element={<Explore />} />
+              <Route path="/notifications" element={<Notification />} />
               <Route path="/article/:id" element={<OpenArticle />} />
             </Routes>
           </div>

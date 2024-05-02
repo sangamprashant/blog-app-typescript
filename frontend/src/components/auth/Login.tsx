@@ -24,7 +24,7 @@ const Login = () => {
 
   React.useLayoutEffect(() => {
     if (authProps.isLogged) {
-      navigate("/");
+      navigate("/account");
     }
   }, [authProps]);
 
@@ -100,7 +100,7 @@ const Login = () => {
             </h5>
           </>
         );
-        navigate("/");
+        navigate("/account");
       }
     } catch (error: any) {
       console.log("failed to login");

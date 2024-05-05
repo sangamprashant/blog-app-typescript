@@ -150,21 +150,27 @@ const WriteAnArticle = () => {
               <div className="p-2 border rounded-2 d-flex gap-2">
                 <button
                   type="button"
-                  className="btn btn-outline-secondary"
+                  className={`btn btn-${
+                    A === "start" ? "" : "outline-"
+                  }secondary`}
                   onClick={() => setA("start")}
                 >
                   <AlignVerticalTopIcon />
                 </button>
                 <button
                   type="button"
-                  className="btn btn-outline-secondary"
+                  className={`btn btn-${
+                    A === "center" ? "" : "outline-"
+                  }secondary`}
                   onClick={() => setA("center")}
                 >
                   <AlignHorizontalCenterIcon />
                 </button>
                 <button
                   type="button"
-                  className="btn btn-outline-secondary"
+                  className={`btn btn-${
+                    A === "end" ? "" : "outline-"
+                  }secondary`}
                   onClick={() => setA("end")}
                 >
                   <AlignVerticalBottomIcon />
